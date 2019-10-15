@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+let port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
@@ -8,7 +8,7 @@ app.get('/', function(req,res) {
   res.sendFile(__dirname + '/timeline.html');
 });
 
-app.get('/', function(req,res) {
+app.get('/upload', function(req,res) {
   res.sendFile(__dirname + '/upload.html');
 });
 
