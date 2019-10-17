@@ -1,0 +1,31 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>For Show - Upload</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/upload.css">
+  </head>
+  <body>
+    This site is currently in development.<br>
+    <input type="file" id="image-file" name="image-file" accept=".png,.jpg,.jpeg,.gif">
+    <img id="image-file-preview" src="images/default-preview.png">
+    <form method="POST" action="/upload-complete">
+      <input type="hidden" id="image-url" name="image-url" value="images/default-preview.png"><br>
+      <input type="checkbox" name="category-1" value="category-1">
+      <input type="checkbox" name="category-2" value="category-2">
+      <input type="checkbox" name="category-3" value="category-3">
+      <input type="checkbox" name="category-4" value="category-4">
+      <input type="text" name="keywords" placeholder="Keywords"><br>
+      <input type="text" name="description" placeholder="Description"><br>
+      <input type="text" name="time" placeholder="Time Period"><br>
+      <input type="submit">
+    </form>
+    <script
+		  src="https://code.jquery.com/jquery-3.3.1.min.js"
+		  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		  crossorigin="anonymous"></script>
+		<script>window.jQuery || document.write('<script src="js/jquery-3.4.1.min.js"><\/script>')</script>
+    <script src="js/upload.js"></script>
+  </body>
+</html>
