@@ -84,21 +84,21 @@ function uploadFile(file, signedRequest, url, fileNo) {
 
 $('#submit-form').on('click', (e) => {
   e.preventDefault();
-  for(let i = 1; i <= formCount; i++) {
-    var el = $(`form[data-form-no="${i}"]`);
+  $('form').each(function() {
+    var el = $(this);
     var data = {
-      image: el.children('input[name="image-file"]').val(),
+      image: el.children('input[name="image-url"]').val(),
       categories: [],
       keywords: el.children('input[name="keywords"]').val(),
       description: el.children('input[name="description"]').val(),
       date: el.children('input[name="date"]').val()
     }
-    el.children('.category-checkbox').each((categoryEl) => {
-      if(categoryEl.is(':checked')) {
-        data.categories.push(categoryEl.val());
+    el.find('.category-checkbox').each(function() {
+      if($(this).is(':checked')) {
+        data.categories.push($(this).val());
       }
     });
-
+    console.log(data);
     $.post('/upload', data, (err) => {
       if(err.length > 0) {
         var alertMsg = '';
@@ -110,7 +110,7 @@ $('#submit-form').on('click', (e) => {
         alert('Upload successful!');
       }
     });
-  }
+  });
 });
 
 $('#add-item').on('click', () => {

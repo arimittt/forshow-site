@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const { Client } = require('pg');
+const bodyParser = require('body-parser');
 const dbUrl = process.env.DATABASE_URL;
 const client = new Client({
   connectionString: dbUrl,
@@ -16,6 +17,13 @@ const pgp = require('pg-promise')({
 });
 pgp.pg.defaults.ssl = true;
 var db = pgp(dbUrl);
+
+client.connect();
+app.set('views', './views');
+app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
+aws.config.region = 'eu-central-1';
 
 const categories = [
   'politics',
@@ -34,11 +42,6 @@ const categories = [
   'recreation',
   'miscellaneous'
 ];
-
-client.connect();
-app.set('views', './views');
-app.use(express.static('public'));
-aws.config.region = 'eu-central-1';
 
 app.get('/', (req,res) => {
   res.sendFile(__dirname + '/views/timeline.html');
@@ -81,11 +84,9 @@ app.get('/sign-s3', (req, res) => {
 
 app.post('/upload', (req, res) => {
   var errors = [];
-  var keywords = req.body.keywords.split('_');
+  var keywords = req.body.keywords.split(',');
   var categoriesQuery = '';
   var keywordsQuery = '';
-
-  console.log('Received data.');
 
   if(!req.body.image) {
     errors.push('Could not upload image.');
@@ -99,6 +100,8 @@ app.post('/upload', (req, res) => {
     keywords[i] = keywords[i].toLowerCase();
     keywords[i] = toAlphaNumeric(keywords[i]);
     keywordsQuery = keywordsQuery.concat(`"${keywords[i]}"` + (i < keywords.length - 1 ? ',' : ''));
+    console.log('Keyword: ' + keywords[i]);
+    console.log('Keyword Query: ' + keywordsQuery);
   }
 
   var date;
@@ -110,8 +113,8 @@ app.post('/upload', (req, res) => {
   }
 
   if(!(errors.length > 0)) {
-    let query = `INSERT INTO items (image, categories, keywords, description, date) VALUES ("${req.body.image}", {${categoriesQuery}}, {${keywordsQuery}}, "${req.body.description}", ${date})`;
-
+    let query = `INSERT INTO items (image, categories, keywords, description, date) VALUES ('${req.body.image}', '{${categoriesQuery}}', '{${keywordsQuery}}', '${req.body.description}', '${date}')`;
+    console.log(query);
     db.none(query)
       .then((data) => {
         console.log(JSON.stringify(data));
@@ -128,7 +131,7 @@ app.post('/upload', (req, res) => {
 function toAlphaNumeric(str) {
   var alphaNumericRegex = /^[0-9a-zA-Z]+$/;
   for(let i = 0; i < str.length; i++) {
-    if(!str[i].value.match(alphaNumericRegex)) {
+    if(!alphaNumericRegex.test(str[i])) {
       str[i] = '';
     }
   }
