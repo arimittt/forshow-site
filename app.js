@@ -85,6 +85,8 @@ app.post('/upload', (req, res) => {
   var categoriesQuery = '';
   var keywordsQuery = '';
 
+  console.log('Received data.');
+
   if(!req.body.image) {
     errors.push('Could not upload image.');
   }

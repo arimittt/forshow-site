@@ -24,8 +24,8 @@ $(function() {
     }
     formTemplate =  formTemplate.concat(`
         </div>
-        <input type="text" name="keywords" placeholder="Keywords"><br>
-        <input type="text" name="description" placeholder="Description"><br>
+        <input type="text" name="keywords" placeholder="Keywords" value=""><br>
+        <input type="text" name="description" placeholder="Description" value=""><br>
         <input type="date" name="date" min="01-09-2019" max="${curDate}" value="${curDate}"><br>
       </form>
     `);
@@ -40,8 +40,8 @@ function addForm() {
   $('form').last().children('.image-file').attr('id', `image-file-${formCount}`);
 }
 
-$('.image-file').on('change', function() {
-  var fileNo = $(this).parents('form')[0].attr('data-form-no');
+$('body').on('change', '.image-file', function() {
+  var fileNo = $(this).parents('form').attr('data-form-no');
   const file = document.getElementById(`image-file-${fileNo}`).files[0];
   if(file == null) {
     return alert('No file selected.');
@@ -84,17 +84,18 @@ function uploadFile(file, signedRequest, url, fileNo) {
 
 $('#submit-form').on('click', (e) => {
   e.preventDefault();
-  $('form').each(() => {
+  for(let i = 1; i <= formCount; i++) {
+    var el = $(`form[data-form-no="${i}"]`);
     var data = {
-      image: $(this).children('input[name="image-file"]').val(),
+      image: el.children('input[name="image-file"]').val(),
       categories: [],
-      keywords: $(this).children('input[name="keywords"]').val(),
-      description: $(this).children('input[name="description"]').val(),
-      date: $(this).children('input[name="date"]').val()
+      keywords: el.children('input[name="keywords"]').val(),
+      description: el.children('input[name="description"]').val(),
+      date: el.children('input[name="date"]').val()
     }
-    $(this).children('.category-checkbox').each((el) => {
-      if(el.is(':checked')) {
-        data.categories.push(el.val());
+    el.children('.category-checkbox').each((categoryEl) => {
+      if(categoryEl.is(':checked')) {
+        data.categories.push(categoryEl.val());
       }
     });
 
@@ -109,7 +110,7 @@ $('#submit-form').on('click', (e) => {
         alert('Upload successful!');
       }
     });
-  });
+  }
 });
 
 $('#add-item').on('click', () => {
