@@ -1,11 +1,11 @@
-var categories = [];
-var formTemplate;
-var curDate;
-var formCount = 0;
+let categories = [];
+let formTemplate;
+let curDate;
+let formCount = 0;
 
 $(function() {
-  var dateObj = new Date();
-  var curDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+  const dateObj = new Date();
+  const curDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
 
   $.get('/categories', (res) => {
     categories = JSON.parse(res);
@@ -41,7 +41,7 @@ function addForm() {
 }
 
 $('body').on('change', '.image-file', function() {
-  var fileNo = $(this).parents('form').attr('data-form-no');
+  const fileNo = $(this).parents('form').attr('data-form-no');
   const file = document.getElementById(`image-file-${fileNo}`).files[0];
   if(file == null) {
     return alert('No file selected.');
@@ -85,8 +85,8 @@ function uploadFile(file, signedRequest, url, fileNo) {
 $('#submit-form').on('click', (e) => {
   e.preventDefault();
   $('form').each(function() {
-    var el = $(this);
-    var data = {
+    let el = $(this);
+    let data = {
       image: el.children('input[name="image-url"]').val(),
       categories: [],
       keywords: el.children('input[name="keywords"]').val(),
@@ -101,7 +101,7 @@ $('#submit-form').on('click', (e) => {
     console.log(data);
     $.post('/upload', data, (err) => {
       if(err.length > 0) {
-        var alertMsg = '';
+        let alertMsg = '';
         for(let i = 0; i < err.length; i++) {
           alertMsg += err[i] + '\r\n';
         }

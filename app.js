@@ -11,12 +11,12 @@ const aws = require('aws-sdk');
 const S3_BUCKET = process.env.S3_BUCKET;
 let port = process.env.PORT || 3000;
 
-var Promise = require('bluebird');
+const Promise = require('bluebird');
 const pgp = require('pg-promise')({
   promiseLib: Promise
 });
 pgp.pg.defaults.ssl = true;
-var db = pgp(dbUrl);
+const db = pgp(dbUrl);
 
 client.connect();
 app.set('views', './views');
@@ -83,10 +83,10 @@ app.get('/sign-s3', (req, res) => {
 });
 
 app.post('/upload', (req, res) => {
-  var errors = [];
-  var keywords = req.body.keywords.split(',');
-  var categoriesQuery = '';
-  var keywordsQuery = '';
+  let errors = [];
+  let keywords = req.body.keywords.split(',');
+  let categoriesQuery = '';
+  let keywordsQuery = '';
 
   if(!req.body.image) {
     errors.push('Could not upload image.');
@@ -104,9 +104,9 @@ app.post('/upload', (req, res) => {
     console.log('Keyword Query: ' + keywordsQuery);
   }
 
-  var date;
+  let date;
   if(!req.body.date) {
-    var dateObj = new Date();
+    const dateObj = new Date();
     date = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
   } else {
     date = req.body.date
@@ -129,7 +129,7 @@ app.post('/upload', (req, res) => {
 });
 
 function toAlphaNumeric(str) {
-  var alphaNumericRegex = /^[0-9a-zA-Z]+$/;
+  const alphaNumericRegex = /^[0-9a-zA-Z]+$/;
   for(let i = 0; i < str.length; i++) {
     if(!alphaNumericRegex.test(str[i])) {
       str[i] = '';
