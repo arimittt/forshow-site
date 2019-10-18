@@ -10,14 +10,30 @@ const aws = require('aws-sdk');
 const S3_BUCKET = process.env.S3_BUCKET;
 let port = process.env.PORT || 3000;
 
-console.log(`DATABASE_URL: ${process.env.DATABASE_URL} | dbUrl: ${dbUrl} | S3_BUCKET: ${process.env.S3_BUCKET}`);
-
 var Promise = require('bluebird');
 const pgp = require('pg-promise')({
   promiseLib: Promise
 });
 pgp.pg.defaults.ssl = true;
 var db = pgp(dbUrl);
+
+const categories = [
+  'politics',
+  'technology',
+  'art',
+  'religion',
+  'internet culture',
+  'protest',
+  'environmentalism',
+  'racism',
+  'sexism',
+  'lgbt',
+  'feminism',
+  'consumerism',
+  'advertising',
+  'recreation',
+  'miscellaneous'
+];
 
 client.connect();
 app.set('views', './views');
@@ -30,6 +46,11 @@ app.get('/', (req,res) => {
 
 app.get('/upload', (req,res) => {
   res.sendFile(__dirname + '/views/upload.html');
+});
+
+app.get('/categories', (req,res) => {
+  res.write(JSON.stringify(categories));
+  res.end();
 });
 
 app.get('/sign-s3', (req, res) => {
@@ -78,19 +99,16 @@ app.post('/upload', (req, res) => {
     keywordsQuery = keywordsQuery.concat(`"${keywords[i]}"` + (i < keywords.length - 1 ? ',' : ''));
   }
 
-  if(req.body.time) {
-    var isEra = false;
-    if(req.body.time[req.body.time.length - 1] == 's') {
-      isEra = true;
-    }
-    var time = parseInt(req.body.time, 10);
-    if(!time) {
-      errors.push('Time invalid, please check the format.');
-    }
+  var date;
+  if(!req.body.date) {
+    var dateObj = new Date();
+    date = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+  } else {
+    date = req.body.date
   }
 
   if(!(errors.length > 0)) {
-    let query = `INSERT INTO items (image, categories, keywords, description, time, isera) VALUES ("${req.body.image}", {${categoriesQuery}}, {${keywordsQuery}}, "${req.body.description}", ${time}, ${isEra})`;
+    let query = `INSERT INTO items (image, categories, keywords, description, date) VALUES ("${req.body.image}", {${categoriesQuery}}, {${keywordsQuery}}, "${req.body.description}", ${date})`;
 
     db.none(query)
       .then((data) => {
