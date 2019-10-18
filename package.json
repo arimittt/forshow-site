@@ -10,7 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.550.0",
+    "bluebird": "^3.7.1",
     "express": "^4.17.1",
-    "pg": "^7.12.1"
+    "pg": "^7.12.1",
+    "pg-promise": "^9.3.3"
   }
 }

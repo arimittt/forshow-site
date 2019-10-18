@@ -38,3 +38,44 @@ function uploadFile(file, signedRequest, url) {
   };
   xhr.send(file);
 }
+
+var categories = [
+  'category-1',
+  'category-2',
+  'category-3',
+  'category-4'
+];
+
+$(function() {
+  for(let i = 0; i < categories.length; i++) {
+    $('.category-list').append(`<input type="checkbox" name="${categories[i]}" value="${categories[i]}">`);
+  }
+});
+
+$('form').submit((e) => {
+  e.preventDefault();
+  var data = {
+    image: $('#image-url').val(),
+    categories: [],
+    keywords: $('#keywords').val(),
+    description: $('#description').val(),
+    time: $('#time').val()
+  }
+  for(let i = 0; i < categories.length; i++) {
+    if($(`input[name='${categories[i]}']`).is(':checked')) {
+      data.categories.push(categories[i]);
+    }
+  }
+
+  $.post('/upload', data, (err) => {
+    if(err.length > 0) {
+      var alertMsg = '';
+      for(let i = 0; i < err.length; i++) {
+        alertMsg += err[i] + '\r\n';
+      }
+      alert(alertMsg);
+    } else {
+      alert('Upload successful!');
+    }
+  });
+});
