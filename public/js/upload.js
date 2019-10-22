@@ -137,7 +137,7 @@ function handleKeywordInput(inputEl, focusOut = false) {
   function addSpan() {
     let keywordString = '';
     for(let i = 0; i < inputEl.val().length; i++) {
-      if (alphaNumericRegex.test(inputEl.val()[i]) && !(i == 0 && inputEl.val()[i])) {
+      if (alphaNumericRegex.test(inputEl.val()[i]) && !(i == 0 && inputEl.val()[i] == ' ')) {
         keywordString = keywordString.concat(inputEl.val()[i]);
       }
     }
