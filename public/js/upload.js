@@ -5,7 +5,7 @@ let formData = [];
 
 $(function() {
   const dateObj = new Date();
-  const curDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+  curDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
 
   $.get('/categories', (res) => {
     categories = JSON.parse(res);
@@ -34,6 +34,7 @@ $(function() {
           <ul class="keywords-container">
             <input type="text" placeholder="Use commas to separate keywords.">
           </ul>
+          <span class="upload-title">Date of upload: </span><input type="date" value="${curDate}" max="${curDate}" min="2019-09-01">
         </div>
       </form>
     `);
@@ -45,7 +46,8 @@ function addForm(imgUrl) {
     image: imgUrl,
     categories: [],
     keywords: [],
-    description: ''
+    description: '',
+    date: curDate
   });
   if(formData.length > 0) {
     $('.forms').css('justify-content', 'flex-start');
@@ -148,6 +150,10 @@ function handleKeywordInput(inputEl, focusOut = false) {
   }
 }
 
+$('body').on('click', '.keywords-container span', function() {
+  $(this).remove();
+});
+
 $('body').on('keyup', 'input[type="text"]', function (e) {
   if(e.keyCode == 8 && !$(this).val() && removeSpan) {
     $(this).siblings('span').last().remove();
@@ -160,6 +166,10 @@ $('body').on('keyup', 'input[type="text"]', function (e) {
 
 $('body').on('change', '.description', function() {
   formData[parseInt($(this).parents('form').attr('data-form-no')) - 1].description = $(this).val();
+});
+
+$('body').on('change', 'input[type="date"]', function() {
+  formData[parseInt($(this).parents('form').attr('data-form-no')) - 1].date = $(this).val() ? $(this).val() : curDate;
 });
 
 function getSignedRequest(file, fileNo) {

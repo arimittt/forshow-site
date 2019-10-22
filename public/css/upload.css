@@ -189,6 +189,7 @@ form {
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
     padding: 0 0.4rem;
+    white-space: nowrap;
     color: var(--fg-col);
     font: var(--base-font);
     font-size: 0.85rem;
@@ -196,6 +197,22 @@ form {
     line-height: 1.9rem;
     text-transform: uppercase;
     background-color: var(--prim-col);
+    cursor: pointer;
+}
+
+.keywords-container span::after {
+    display: inline-block;
+    content: '×';
+    margin: 0 0.25rem 0 0.5rem;
+    transform-origin: center;
+    transform: scale(1.25);
+    opacity: 0.75;
+    transition: all 0.2s;
+}
+
+.keywords-container span:hover::after {
+    transform: scale(1.5);
+    opacity: 1;
 }
 
 input[type="text"] {
@@ -215,6 +232,28 @@ input[type="text"] {
 
 input[type="text"]::placeholder {
     text-transform: none;
+}
+
+input[type="date"] {
+    margin-left: 1rem;
+    padding: 0.25rem 0;
+    color: var(--fg-col);
+    font: var(--base-font);
+    background-color: var(--bg-col);
+    border: none;
+    border-bottom: var(--prim-border);
+    outline: none;
+    transition: all 0.2s;
+}
+
+input[type="date"]:focus {
+    border-bottom-color: var(--prim-col);
+}
+
+.upload-title {
+    color: var(--fg-col);
+    font: var(--base-font);
+    font-style: italic;
 }
 
 .add-item {

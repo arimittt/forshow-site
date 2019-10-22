@@ -84,7 +84,7 @@ app.get('/sign-s3', (req, res) => {
 
 app.post('/upload', (req, res) => {
   let errors = [];
-  let keywords = req.body.keywords.split(',');
+  let keywords = req.body.keywords;
   let categoriesQuery = '';
   let keywordsQuery = '';
 
@@ -100,8 +100,6 @@ app.post('/upload', (req, res) => {
     keywords[i] = keywords[i].toLowerCase();
     keywords[i] = toAlphaNumeric(keywords[i]);
     keywordsQuery = keywordsQuery.concat(`"${keywords[i]}"` + (i < keywords.length - 1 ? ',' : ''));
-    console.log('Keyword: ' + keywords[i]);
-    console.log('Keyword Query: ' + keywordsQuery);
   }
 
   let date;
@@ -114,7 +112,6 @@ app.post('/upload', (req, res) => {
 
   if(!(errors.length > 0)) {
     let query = `INSERT INTO items (image, categories, keywords, description, date) VALUES ('${req.body.image}', '{${categoriesQuery}}', '{${keywordsQuery}}', '${req.body.description}', '${date}')`;
-    console.log(query);
     db.none(query)
       .then((data) => {
         console.log(JSON.stringify(data));
