@@ -1,0 +1,7 @@
+:root {
+    --prim-col: #ff4940;
+    --fg-col: #fff;
+    --bg-col: #111;
+    --prim-border: 1px solid var(--fg-col);
+    --base-font: 400 1rem/1.5rem 'IBM Plex Sans', sans-serif;
+}

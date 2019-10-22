@@ -2,16 +2,36 @@
 
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Show - Upload</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/upload.css">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,600,700&display=swap" rel="stylesheet">
   </head>
   <body>
-    This site is currently in development.<br>
-    <div class="forms">
+    <div class="forms-container">
+      <div class="forms">
+        <svg class="add-item blob-container" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path id="add-item" class="blob"
+            d="M 256 0 c 256 0, -256 0, 0 0 S 512 256, 512 256 S 512 512, 256 512 S 0 256, 0 256 S 0 0, 256 0 z"
+            vector-effect="non-scaling-stroke" />
+          <path class="add-icon" d="M 256 224 v 64 M 224 256 h 64 z" vector-effect="non-scaling-stroke" />
+        </svg>
+      </div>
     </div>
-    <button id="add-item">+</button>
-    <button id="submit-form">Upload</button>
+    <div class="submit-form">Upload</div>
+    <div class="scroll-indicator-container">
+      <div class="scroll-indicator"></div>
+    </div>
+    <input type="file" class="image-file" accept="image/png, image/jpeg, image/jpg, image/gif">
+    <svg class="img-preview-clip-container" width="0" height="0" viewBox="0 0 256 256">
+      <defs>
+        <clipPath id="img-preview-clip-1">
+          <path class="blob" d="M 256 0 c 256 0, -256 0, 0 0 S 512 256, 512 256 S 512 512, 256 512 S 0 256, 0 256 S 0 0, 256 0 z"/>
+        </clipPath>
+      </defs>
+    </svg>
     <script
 		  src="https://code.jquery.com/jquery-3.3.1.min.js"
 		  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
