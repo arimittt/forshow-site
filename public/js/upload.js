@@ -195,25 +195,11 @@ function uploadFile(file, signedRequest, url, fileNo) {
 
 $('#submit-form').on('click', (e) => {
   e.preventDefault();
-  $('form').each(function() {
-    let el = $(this);
-    let data = {
-      image: el.children('input[name="image-url"]').val(),
-      categories: [],
-      keywords: el.children('input[name="keywords"]').val(),
-      description: el.children('input[name="description"]').val(),
-      date: el.children('input[name="date"]').val()
-    }
-    el.find('.category-checkbox').each(function() {
-      if($(this).is(':checked')) {
-        data.categories.push($(this).val());
-      }
-    });
-    console.log(data);
-    $.post('/upload', data, (err) => {
-      if(err.length > 0) {
+  for(let i = 0; i < formData.length; i++) {
+    $.post('/upload', formData[i], (err) => {
+      if (err.length > 0) {
         let alertMsg = '';
-        for(let i = 0; i < err.length; i++) {
+        for (let i = 0; i < err.length; i++) {
           alertMsg += err[i] + '\r\n';
         }
         alert(alertMsg);
@@ -221,7 +207,7 @@ $('#submit-form').on('click', (e) => {
         alert('Upload successful!');
       }
     });
-  });
+  }
 });
 
 $('#add-item').on('click', () => {
