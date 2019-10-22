@@ -193,7 +193,7 @@ function uploadFile(file, signedRequest, url, fileNo) {
   xhr.send(file);
 }
 
-$('#submit-form').on('click', (e) => {
+$('.submit-form').on('click', (e) => {
   e.preventDefault();
   for(let i = 0; i < formData.length; i++) {
     $.post('/upload', formData[i], (err) => {
