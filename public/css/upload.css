@@ -1,3 +1,8 @@
+::selection {
+    color: var(--fg-col);
+    background-color: var(--prim-col);
+}
+
 body {
     margin: 0;
     background-color: var(--bg-col);

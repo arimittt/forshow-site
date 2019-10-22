@@ -14,7 +14,7 @@ $(function() {
     });
     formTemplate = `
       <form>
-        <div class="img-preview" style="background-image: url('images/1_KBTR.jpg')"></div>
+        <div class="img-preview"></div>
         <div class="form-details">
           <textarea class="description" rows="3" placeholder="Write a description..."></textarea>
           <span class="form-title">Choose upto 3 categories.</span>
@@ -54,7 +54,7 @@ function addForm(imgUrl) {
   $('form').last().attr('data-form-no', formData.length);
   $('form').last().children('.image-file').attr('id', `image-file-${formData.length}`);
   resizeBlob();
-  $(`form[data-form-no="${formData.length}"]`).children('.image-preview').css('background-image', `url(${formData[formData.length - 1].image})`);
+  $(`form[data-form-no="${formData.length}"]`).children('.img-preview').css('background-image', `url(${formData[formData.length - 1].image})`);
   blobs.push(
     {
       id: 'img-preview-clip-1',
@@ -64,7 +64,6 @@ function addForm(imgUrl) {
       progress: 0
     }
   );
-  console.log($(`form[data-form-no="${formData.length}"]`).position().left + ' | ' + formData.length);
   $('.forms').animate({
     scrollLeft: formsInnerWidth - formsWidth
   },500);
