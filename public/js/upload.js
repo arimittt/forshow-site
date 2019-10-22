@@ -83,6 +83,39 @@ $('body').on('change', '.image-file', function() {
   }
 });
 
+function getSignedRequest(file, fileNo) {
+  const xhr = new XMLHttpRequest();
+  const timestamp = new Date();
+  const fileName = `${Math.floor(Math.random() * 999999999999999)}-${timestamp.getHours()}-${timestamp.getMinutes()}-${timestamp.getSeconds()}`
+  xhr.open('GET', `/sign-s3?file-name=${fileName}&file-type=${encodeURIComponent(file.type)}`);
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        uploadFile(file, response.signedRequest, response.url, fileNo);
+      } else {
+        alert('Error: Could not get signed URL.');
+      }
+    }
+  };
+  xhr.send();
+}
+
+function uploadFile(file, signedRequest, url, fileNo) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('PUT', signedRequest);
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        addForm(url);
+      } else {
+        alert('Error: Could not upload file.');
+      }
+    }
+  };
+  xhr.send(file);
+}
+
 $('body').on('click', '.category-item', function() {
   let formNo = parseInt($(this).parents('form').attr('data-form-no'));
   if($(this).hasClass('category-item-active')) {
@@ -171,37 +204,6 @@ $('body').on('change', '.description', function() {
 $('body').on('change', 'input[type="date"]', function() {
   formData[parseInt($(this).parents('form').attr('data-form-no')) - 1].date = $(this).val() ? $(this).val() : curDate;
 });
-
-function getSignedRequest(file, fileNo) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', `/sign-s3?file-name=${encodeURIComponent(file.name)}&file-type=${encodeURIComponent(file.type)}`);
-  xhr.onreadystatechange = () => {
-    if(xhr.readyState === 4) {
-      if(xhr.status === 200) {
-        const response = JSON.parse(xhr.responseText);
-        uploadFile(file, response.signedRequest, response.url, fileNo);
-      } else {
-        alert('Error: Could not get signed URL.');
-      }
-    }
-  };
-  xhr.send();
-}
-
-function uploadFile(file, signedRequest, url, fileNo) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('PUT', signedRequest);
-  xhr.onreadystatechange = () => {
-    if(xhr.readyState === 4) {
-      if(xhr.status === 200) {
-        addForm(url);
-      } else {
-        alert('Error: Could not upload file.');
-      }
-    }
-  };
-  xhr.send(file);
-}
 
 $('.submit-form').on('click', (e) => {
   e.preventDefault();
@@ -338,7 +340,7 @@ $(document).mouseup(() => {
   scrollIndicatorState = 0
 });
 
-$(window).bind('mousewheel DOMMouseScroll', function(e) {
+$(window).on('mousewheel DOMMouseScroll', function(e) {
   let newScrollPos = $('.forms').scrollLeft() - e.originalEvent.wheelDelta;
   $('.forms').scrollLeft(newScrollPos);
   scrollIndicatorPos = $('.forms').scrollLeft() * (scrollIndicatorWidth / formsWidth);
