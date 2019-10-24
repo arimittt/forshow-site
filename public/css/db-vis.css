@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    background-color: var(--bg-col);
+    overflow: hidden;
+}
+
+#gl {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+#container {
+    position: relative;
+    z-index: 10;
+}
+
+.spectacle-item {
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--prim-col);
+    background-size: cover;
+    background-position: center;
+    clip-path: url('#img-clip');
+}
+
+.spectacle-item:hover {
+    border: var(--prim-border);
+}

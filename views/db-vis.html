@@ -1,0 +1,28 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>For Show</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/db-vis.css">
+  </head>
+  <body>
+    <div id="container"></div>
+    <canvas id="gl"></canvas>
+    <svg class="img-clip-container" width="0" height="0" viewBox="0 0 512 512">
+      <defs>
+        <clipPath id="img-clip">
+          <path class="blob"
+            d="M 256 0 c 256 0, -256 0, 0 0 S 512 256, 512 256 S 512 512, 256 512 S 0 256, 0 256 S 0 0, 256 0 z" />
+        </clipPath>
+      </defs>
+    </svg>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-3.4.1.min.js"><\/script>')</script>
+    <script src="js/three.min.js"></script>
+    <script src="js/CSS3DRenderer.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/db-vis.js"></script>
+  </body>
+</html>

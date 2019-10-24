@@ -44,7 +44,7 @@ const categories = [
 ];
 
 app.get('/', (req,res) => {
-  res.sendFile(__dirname + '/views/timeline.html');
+  res.sendFile(__dirname + '/views/db-vis.html');
 });
 
 app.get('/upload', (req,res) => {
@@ -80,6 +80,19 @@ app.get('/sign-s3', (req, res) => {
     res.write(JSON.stringify(returnData));
     res.end();
   });
+});
+
+app.get('/search', (req, res) => {
+  console.log('Received request from client.');
+  let query = 'SELECT * FROM items ORDER BY id';
+  db.any(query, true)
+    .then((data) => {
+      res.send(JSON.stringify(data));
+      console.log('Sent DB data to client:\n' + JSON.stringify(data));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.post('/upload', (req, res) => {
