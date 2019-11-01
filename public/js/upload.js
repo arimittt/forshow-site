@@ -9,9 +9,6 @@ $(function() {
 
   $.get('/categories', (res) => {
     categories = JSON.parse(res);
-    categoriesObj = $('<div></div>', {
-      "class" : "categories-list"
-    });
     formTemplate = `
       <form>
         <div class="img-preview"></div>
@@ -205,8 +202,10 @@ $('body').on('change', 'input[type="date"]', function() {
   formData[parseInt($(this).parents('form').attr('data-form-no')) - 1].date = $(this).val() ? $(this).val() : curDate;
 });
 
+let haveAlerted;
 $('.submit-form').on('click', (e) => {
   e.preventDefault();
+  haveAlerted = false;
   for(let i = 0; i < formData.length; i++) {
     $.post('/upload', formData[i], (err) => {
       if (err.length > 0) {
@@ -216,7 +215,12 @@ $('.submit-form').on('click', (e) => {
         }
         alert(alertMsg);
       } else {
-        alert('Upload successful!');
+        if(!haveAlerted) {
+          alert('Upload successful!');
+          haveAlerted = true;
+          $('form').remove();
+          formData = [];
+        }
       }
     });
   }

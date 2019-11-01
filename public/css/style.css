@@ -5,3 +5,76 @@
     --prim-border: 1px solid var(--fg-col);
     --base-font: 400 1rem/1.5rem 'IBM Plex Sans', sans-serif;
 }
+
+.categories-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    width: calc(100% + 1rem);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.category-item {
+    display: inline-flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    min-width: calc((100% / 3) - 2rem);
+    margin: 0 1rem 1rem 0;
+    border-bottom: var(--prim-border);
+    cursor: pointer;
+}
+
+.category-item span {
+    color: var(--fg-col);
+    font: var(--base-font);
+    font-style: italic;
+}
+
+.category-box {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-left: 1rem;
+    transform: translateY(1px);
+    border: var(--prim-border);
+    border-bottom: none;
+}
+
+.category-item-active {
+    border-bottom-color: var(--prim-col);
+    animation: category-item-active-in-anim 0.5s;
+}
+
+@keyframes category-item-active-in-anim {
+    from {
+        border-bottom-color: var(--fg-col);
+    }
+
+    to {
+        border-bottom-color: var(--prim-col);
+    }
+}
+
+.category-item-active span {
+    font-weight: 700;
+}
+
+.category-item-active .category-box {
+    background-color: var(--prim-col);
+    border-color: var(--prim-col);
+    animation: category-item-active-box-in-anim 0.5s;
+}
+
+@keyframes category-item-active-box-in-anim {
+    from {
+        background-color: var(--fg-col);
+        border-color: var(--fg-col);
+    }
+
+    to {
+        background-color: var(--prim-col);
+        border-color: var(--prim-col);
+    }
+}

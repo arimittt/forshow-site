@@ -2,11 +2,89 @@
 
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Show</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/db-vis.css">
   </head>
   <body>
+    <div class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-title">Filters</div>
+        <div class="back-icon"></div>
+      </div>
+      <div class="filters-container">
+        <div class="filters-scroll-container">
+          <div class="categories-container"></div>
+          <div class="keyword-input-container">
+            <input class="keyword-input" type="text" placeholder="Add keywords...">
+            <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 8">
+              <path d="M 0 0 L 16 0 L 8.5 8 Z" />
+            </svg>
+            <div class="keywords-dropdown">
+              <div class="keywords-dropdown-scroll"></div>
+            </div>
+          </div>
+          <div class="keywords-container"></div>
+        </div>
+      </div>
+      <button class="apply-filter">Apply</button>
+    </div>
+    <div class="spectacle-focus-container">
+      <div class="spectacle-focus-scroll">
+        <svg class="close-icon" viewBox="0 0 10 10">
+          <line vector-effect="non-scaling-stroke" x1="0" x2="10" y1="0" y2="10" />
+          <line vector-effect="non-scaling-stroke" x1="10" x2="0" y1="0" y2="10" />
+        </svg>
+        <img class="focus-image">
+        <div class="focus-description">Lorem ipsum dolor set amit.</div>
+        <div class="focus-categories">
+          <div class="focus-categories-item">Category-1</div>
+          <div class="focus-categories-item">Category-2</div>
+          <div class="focus-categories-item">Category-3</div>
+        </div>
+        <div class="focus-keywords">
+          <div class="focus-keywords-item">Keyword-1</div>
+          <div class="focus-keywords-item">Keyword-2</div>
+          <div class="focus-keywords-item">Keyword-3</div>
+          <div class="focus-keywords-item">Keyword-1</div>
+          <div class="focus-keywords-item">Keyword-2</div>
+          <div class="focus-keywords-item">Keyword-3</div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-container">
+      <svg class="close-icon" viewBox="0 0 10 10">
+        <line vector-effect="non-scaling-stroke" x1="0" x2="10" y1="0" y2="10" />
+        <line vector-effect="non-scaling-stroke" x1="10" x2="0" y1="0" y2="10" />
+      </svg>
+      Max Spectacle Count: 
+      <input class="spectacle-count-input" value="48"><br>
+      <div class="settings-note">Reduce spectacle count for better performance.</div><br>
+      Image Size: <input class="image-size-input" value="512"><br>
+    </div>
+    <div class="ui-container">
+      <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 28">
+        <line class="a" y1="2" x2="48" y2="2" vector-effect="non-scaling-stroke" />
+        <line class="a" y1="14" x2="48" y2="14" vector-effect="non-scaling-stroke" />
+        <line class="a" y1="26" x2="48" y2="26" vector-effect="non-scaling-stroke" />
+        <rect x="32" width="8" height="4" />
+        <rect x="24" y="24" width="8" height="4" />
+        <rect x="8" y="12" width="8" height="4" />
+      </svg>
+      <div class="bottom-ui-container">
+        <button class="settings-button">Settings</button>
+        <a class="upload-button" href="/upload" target="_blank">Upload</a>
+        <span>Zoom In/Out — <span class="key-symbol">Scroll</span>&#160&#160&#160|&#160&#160&#160Toggle UI — <span class="key-symbol">H</span></span>
+      </div>
+    </div>
+    <div class="vignette">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
     <div id="container"></div>
     <canvas id="gl"></canvas>
     <svg class="img-clip-container" width="0" height="0" viewBox="0 0 512 512">
@@ -22,7 +100,6 @@
     <script>window.jQuery || document.write('<script src="js/jquery-3.4.1.min.js"><\/script>')</script>
     <script src="js/three.min.js"></script>
     <script src="js/CSS3DRenderer.js"></script>
-    <script src="js/OrbitControls.js"></script>
     <script src="js/db-vis.js"></script>
   </body>
 </html>

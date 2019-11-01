@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const { Client } = require('pg');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 const dbUrl = process.env.DATABASE_URL;
 const client = new Client({
   connectionString: dbUrl,
@@ -42,6 +43,12 @@ const categories = [
   'recreation',
   'miscellaneous'
 ];
+
+let staticFiles = [];
+
+fs.readdirSync('./public/images/spectacles').forEach((file) => {
+  staticFiles.push(file);
+});
 
 app.get('/', (req,res) => {
   res.sendFile(__dirname + '/views/db-vis.html');
@@ -87,6 +94,14 @@ app.get('/search', (req, res) => {
   let query = 'SELECT * FROM items ORDER BY id';
   db.any(query, true)
     .then((data) => {
+      for(let i = 0; i < data.length; i++) {
+        for(let j = 0; j < staticFiles.length; j++) {
+          if(staticFiles[j].split('.')[0] == data[i].image.slice(data[i].image.lastIndexOf('/') + 1)) {
+            data[i].image = `images/spectacles/${staticFiles[j].split('.')[0]}.jpg`;
+            break;
+          }
+        }
+      }
       res.send(JSON.stringify(data));
       console.log('Sent DB data to client:\n' + JSON.stringify(data));
     })
