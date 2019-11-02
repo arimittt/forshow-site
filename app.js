@@ -58,6 +58,10 @@ app.get('/upload', (req,res) => {
   res.sendFile(__dirname + '/views/upload.html');
 });
 
+app.get('/installation', (req, res) => {
+  res.sendFile(__dirname + '/views/installation.html');
+});
+
 app.get('/categories', (req,res) => {
   res.write(JSON.stringify(categories));
   res.end();
