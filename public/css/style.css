@@ -67,6 +67,12 @@
     animation: category-item-active-box-in-anim 0.5s;
 }
 
+.category-item-disabled {
+    opacity: 0.5;
+    cursor: default;
+    animation: category-item-disabled-in-anim 0.2s;
+}
+
 @keyframes category-item-active-box-in-anim {
     from {
         background-color: var(--fg-col);

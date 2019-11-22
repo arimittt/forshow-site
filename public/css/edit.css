@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    background-color: var(--bg-col);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 1rem;
+    font: var(--base-font);
+    color: var(--fg-col);
+    border-left: var(--prim-border);
+    border-bottom: var(--prim-border);
+    border-color: var(--prim-col);
+}
+
+th {
+    font-weight: 500;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--fg-col);
+    font: var(--base-font);
+    font-size: 0.85rem;
+    line-height: 1.9rem;
+    background-color: var(--bg-col);
+    border: none;
+    outline: none;
+    transition: all 0.2s;
+}
+
+input[type="text"]::placeholder {
+    text-transform: none;
+}
+
+.save-button {
+    width: 100vw;
+    padding: 1rem;
+    color: var(--fg-col);
+    font: var(--base-font);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    background: var(--prim-col);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.save-button:hover {
+    color: var(--prim-col);
+    background: var(--fg-col);;
+}
+
+.table-img-preview {
+    width: 10rem;
+    height: 10rem;
+    background-size: cover;
+    background-position: center;
+}
+
+.categories-container {
+    width: auto;
+    margin: 0;
+}
+
+.keywords-container {
+    flex-flow: row wrap;
+    justify-content: stretch;
+    align-items: stretch;
+    width: auto;
+}
+
+.keywords-container:first-child {
+    margin-left: 0;
+}
+
+.keywords-container span {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.4rem 0.4rem;
+    white-space: nowrap;
+    color: var(--fg-col);
+    font: var(--base-font);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 2.4rem;
+    text-transform: uppercase;
+    background-color: var(--prim-col);
+    cursor: pointer;
+}
+
+.keywords-container span::after {
+    display: inline-block;
+    content: '×';
+    margin: 0 0.25rem 0 0.5rem;
+    transform-origin: center;
+    transform: scale(1.25);
+    opacity: 0.75;
+    transition: all 0.2s;
+}
+
+.keywords-container span:hover::after {
+    transform: scale(1.5);
+    opacity: 1;
+}

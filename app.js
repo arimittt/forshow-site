@@ -58,6 +58,10 @@ app.get('/upload', (req,res) => {
   res.sendFile(__dirname + '/views/upload.html');
 });
 
+app.get('/edit', (req, res) => {
+  res.sendFile(__dirname + '/views/edit.html');
+});
+
 app.get('/installation', (req, res) => {
   res.sendFile(__dirname + '/views/installation.html');
 });
@@ -94,7 +98,6 @@ app.get('/sign-s3', (req, res) => {
 });
 
 app.get('/search', (req, res) => {
-  console.log('Received request from client.');
   let query = 'SELECT * FROM items ORDER BY id';
   db.any(query, true)
     .then((data) => {
@@ -107,7 +110,6 @@ app.get('/search', (req, res) => {
         }
       }
       res.send(JSON.stringify(data));
-      console.log('Sent DB data to client:\n' + JSON.stringify(data));
     })
     .catch((err) => {
       console.log(err);
@@ -146,7 +148,7 @@ app.post('/upload', (req, res) => {
     let query = `INSERT INTO items (image, categories, keywords, description, date) VALUES ('${req.body.image}', '{${categoriesQuery}}', '{${keywordsQuery}}', '${req.body.description}', '${date}')`;
     db.none(query)
       .then((data) => {
-        console.log(JSON.stringify(data));
+        console.log(`New entry:\n${req.body}`);
       })
       .catch((err) => {
         console.log(err);
@@ -154,6 +156,35 @@ app.post('/upload', (req, res) => {
   }
 
   res.send(errors);
+  res.end();
+});
+
+app.post('/edit', (req, res) => {
+  for(let i = 0; i < req.body.update.length; i++) {
+    let keywords = req.body.update[i].keywords;
+    let categoriesQuery = '';
+    let keywordsQuery = '';
+
+    for (let j = 0; j < req.body.update[i].categories.length; j++) {
+      categoriesQuery = categoriesQuery.concat(`"${req.body.update[i].categories[j]}"` + (j < req.body.update[i].categories.length - 1 ? ',' : ''));
+    }
+
+    for (let j = 0; j < keywords.length; j++) {
+      keywords[j] = keywords[j].toLowerCase();
+      keywords[j] = toAlphaNumeric(keywords[j]);
+      keywordsQuery = keywordsQuery.concat(`"${keywords[j]}"` + (j < keywords.length - 1 ? ',' : ''));
+    }
+
+    let query = `UPDATE items SET description = '${req.body.update[i].description}', categories = '{${categoriesQuery}}', keywords = '{${keywordsQuery}}' WHERE id = ${req.body.update[i].id};`;
+    db.none(query)
+      .then((data) => {
+        console.log(`UPDATE:\n${req.body.update}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  res.send();
   res.end();
 });
 
