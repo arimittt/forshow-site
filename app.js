@@ -183,7 +183,16 @@ app.post('/edit', (req, res) => {
       keywordsQuery = keywordsQuery.concat(`"${keywords[j]}"` + (j < keywords.length - 1 ? ',' : ''));
     }
 
-    let query = `UPDATE items SET description = '${req.body.update[i].description}', categories = '{${categoriesQuery}}', keywords = '{${keywordsQuery}}' WHERE id = ${req.body.update[i].id};`;
+    let description = '';
+    for (let j = 0; j < req.body.update[i].description.length; j++) {
+      if (req.body.update[i].description[j] == "'") {
+        description = description.concat("''");
+      } else {
+        description = description.concat(req.body.update[i].description[j]);
+      }
+    }
+
+    let query = `UPDATE items SET description = '${description}', categories = '{${categoriesQuery}}', keywords = '{${keywordsQuery}}' WHERE id = ${req.body.update[i].id};`;
     db.none(query)
       .then((data) => {
         console.log(`UPDATE:\n${req.body.update}`);
