@@ -145,7 +145,15 @@ app.post('/upload', (req, res) => {
   }
 
   if(!(errors.length > 0)) {
-    let query = `INSERT INTO items (image, categories, keywords, description, date) VALUES ('${req.body.image}', '{${categoriesQuery}}', '{${keywordsQuery}}', '${req.body.description}', '${date}')`;
+    let description = '';
+    for(let i = 0; i < req.body.description.length; i++) {
+      if(req.body.description[i] == "'") {
+        description = description.concat("''");
+      } else {
+        description = description.concat(req.body.description[i]);
+      }
+    }
+    let query = `INSERT INTO items (image, categories, keywords, description, date) VALUES ('${req.body.image}', '{${categoriesQuery}}', '{${keywordsQuery}}', '${description}', '${date}')`;
     db.none(query)
       .then((data) => {
         console.log(`New entry:\n${req.body}`);

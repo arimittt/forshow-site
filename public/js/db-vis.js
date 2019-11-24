@@ -1,6 +1,6 @@
 // Keep maxSpectacleCount a product of horizontalDensity times an integer to avoid "orphans/widows".
 
-let maxSpectacleCount = 48;
+let maxSpectacleCount = 60;
 let radius = 1500;
 let horizontalDensity = 12;
 let verticalDensity = 20;
@@ -134,7 +134,7 @@ function insertSpectacles(spectaclesArr) {
             angles[1] = (curRow - (curRow % 2 == 0 ? (curRow + (curRow / 2)) : ((curRow - 1) / 2))) * verticalDensity * Math.PI / 180;
         }
         cssObject.position.x = radius * Math.sin(angles[0]);
-        cssObject.position.y = radius * Math.sin(angles[1]);
+        cssObject.position.y = radius * angles[1];
         cssObject.position.z = radius * Math.cos(angles[0]);
         cssObject.lookAt(sceneCenter);
         cssScene.add(cssObject);
