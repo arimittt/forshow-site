@@ -3,8 +3,8 @@
 let maxSpectacleCount = 60;
 let radius = 1500;
 let horizontalDensity = 12;
-let verticalDensity = 20;
-let imageSize = [512, 512];
+let verticalDensity = 10;
+let imageSize = [384, 384];
 const maxRotSpeed = 0.1;
 const sidebarAnimSpeed = 0.3;
 const sphereVisible = true;
@@ -17,6 +17,21 @@ let filter = {
     categories: [],
     keywords: []
 }
+
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+};
 
 $(() => {
     fetch('/search')
@@ -42,8 +57,28 @@ $(() => {
             }
 
             keywords.sort();
-
-            insertSpectacles(spectacles);
+            const filterGroup = getUrlParameter('g') ? getUrlParameter('g') : undefined;
+            console.log(filterGroup);
+            if(!filterGroup) {
+                insertSpectacles(spectacles);
+            } else {
+                let groupSpectacles = [];
+                for(let i = 0; i < spectacles.length; i++) {
+                    for(let j = 0; j < spectacles[i].keywords.length; j++) {
+                        if(spectacles[i].keywords[j].replace(/ /g, '').toLowerCase().includes(filterGroup)) {
+                            groupSpectacles.push(spectacles[i]);
+                            j = spectacles[i].keywords.length;
+                            break;
+                        }
+                    }
+                }
+                if(groupSpectacles.length >= 1) {
+                    insertSpectacles(groupSpectacles);
+                } else {
+                    insertSpectacles(spectacles);
+                }
+            }
+            
 
             keywords.forEach((keyword) => {
                 $('.keywords-dropdown-scroll').append(`
@@ -104,25 +139,9 @@ function insertSpectacles(spectaclesArr) {
     while(cssScene.children.length > 0) {
         cssScene.remove(cssScene.children[0]);
     }
+
     const sceneCenter = new THREE.Vector3(0, 0, 0);
     for (let i = 0; i < visibleSpectacles.length; i++) {
-        let itemTemplate = document.createElement('div');
-        itemTemplate.className = 'spectacle-item';
-        itemTemplate.style.backgroundImage = `url('${visibleSpectacles[i].image}')`;
-        itemTemplate.style.width = `${imageSize[0]}px`;
-        itemTemplate.style.height = `${imageSize[1]}px`;
-        let itemCategories = '';
-        let itemKeywords = '';
-        for (let j = 0; j < visibleSpectacles[i].categories.length; j++) {
-            itemCategories = itemCategories.concat(visibleSpectacles[i].categories[j] + (j == visibleSpectacles[i].categories.length - 1 ? '' : ','));
-        }
-        for (let j = 0; j < visibleSpectacles[i].keywords.length; j++) {
-            itemKeywords = itemKeywords.concat(visibleSpectacles[i].keywords[j] + (j == visibleSpectacles[i].keywords.length - 1 ? '' : ','));
-        }
-        itemTemplate.setAttribute('data-id', visibleSpectacles[i].id);
-        itemTemplate.setAttribute('data-categories', itemCategories);
-        itemTemplate.setAttribute('data-keywords', itemKeywords);
-        let cssObject = new THREE.CSS3DObject(itemTemplate);
         const curRow = Math.floor(i / horizontalDensity);
         let angles = [
             ((Math.PI * 2) * (i / horizontalDensity)) + (((curRow + (curRow % 2 == 0 ? 0 : 1)) / 2) % 2 == 0 ? (Math.PI * 2) / (horizontalDensity * 2) : 0),
@@ -133,6 +152,27 @@ function insertSpectacles(spectaclesArr) {
         } else {
             angles[1] = (curRow - (curRow % 2 == 0 ? (curRow + (curRow / 2)) : ((curRow - 1) / 2))) * verticalDensity * Math.PI / 180;
         }
+        addItem(visibleSpectacles[i], angles);
+    }
+
+    function addItem(item, angles) {
+        let itemTemplate = document.createElement('div');
+        itemTemplate.className = 'spectacle-item';
+        itemTemplate.style.backgroundImage = `url('${item.image}')`;
+        itemTemplate.style.width = `${imageSize[0]}px`;
+        itemTemplate.style.height = `${imageSize[1]}px`;
+        let itemCategories = '';
+        let itemKeywords = '';
+        for (let j = 0; j < item.categories.length; j++) {
+            itemCategories = itemCategories.concat(item.categories[j] + (j == item.categories.length - 1 ? '' : ','));
+        }
+        for (let j = 0; j < item.keywords.length; j++) {
+            itemKeywords = itemKeywords.concat(item.keywords[j] + (j == item.keywords.length - 1 ? '' : ','));
+        }
+        itemTemplate.setAttribute('data-id', item.id);
+        itemTemplate.setAttribute('data-categories', itemCategories);
+        itemTemplate.setAttribute('data-keywords', itemKeywords);
+        let cssObject = new THREE.CSS3DObject(itemTemplate);
         cssObject.position.x = radius * Math.sin(angles[0]);
         cssObject.position.y = radius * angles[1];
         cssObject.position.z = radius * Math.cos(angles[0]);
