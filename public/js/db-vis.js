@@ -5,9 +5,10 @@ let radius = 1500;
 let horizontalDensity = 12;
 let verticalDensity = 10;
 let imageSize = [384, 384];
+let connectionThreshold = radius*1.25;
 const maxRotSpeed = 0.1;
 const sidebarAnimSpeed = 0.3;
-const sphereVisible = true;
+const sphereVisible = false;
 
 let spectacles = [];
 let categories = [];
@@ -58,7 +59,6 @@ $(() => {
 
             keywords.sort();
             const filterGroup = getUrlParameter('g') ? getUrlParameter('g') : undefined;
-            console.log(filterGroup);
             if(!filterGroup) {
                 insertSpectacles(spectacles);
             } else {
@@ -139,6 +139,9 @@ function insertSpectacles(spectaclesArr) {
     while(cssScene.children.length > 0) {
         cssScene.remove(cssScene.children[0]);
     }
+    while (glScene.children.length > 0) {
+        glScene.remove(glScene.children[0]);
+    }
 
     const sceneCenter = new THREE.Vector3(0, 0, 0);
     for (let i = 0; i < visibleSpectacles.length; i++) {
@@ -177,7 +180,30 @@ function insertSpectacles(spectaclesArr) {
         cssObject.position.y = radius * angles[1];
         cssObject.position.z = radius * Math.cos(angles[0]);
         cssObject.lookAt(sceneCenter);
+        for(let i = 0; i < cssScene.children.length; i++) {
+            if (cssObject.position.distanceTo(cssScene.children[i].position) <= connectionThreshold) {
+                for(let j = 0; j < item.categories.length; j++) {
+                    const curCategories = cssScene.children[i].element.attributes["data-categories"].value.split(',');
+                    if(curCategories.includes(item.categories[j])) {
+                        addLine(cssObject.position, cssScene.children[i].position, item.categories[j]);
+                        break;
+                    }
+                }
+            }
+        }
+
         cssScene.add(cssObject);
+    }
+
+    function addLine(posA, posB, category) {
+        let material = new THREE.LineBasicMaterial({
+            color: `hsl(${(category ? ((categories.indexOf(category) + 1) / categories.length)*300 : 0)}, 75%, 50%)`
+        });
+        let geometry = new THREE.Geometry();
+        geometry.vertices.push(posA);
+        geometry.vertices.push(posB);
+        let line = new THREE.Line(geometry, material);
+        glScene.add(line);
     }
 }
 
@@ -321,6 +347,7 @@ function togglePause(source, id) {
         if ($('.settings-container').css('display') == 'block') {
             maxSpectacleCount = $('.spectacle-count-input').val();
             imageSize = [$('.image-size-input').val(), $('.image-size-input').val()];
+            connectionThreshold = radius * parseFloat($('.connection-threshold-input').val()) * 2;
             insertSpectacles(spectacles);
             $('.settings-container').css('display', 'none');
         }
@@ -445,15 +472,13 @@ const minFov = 20;
 const maxFov = 120;
 let fov = 50; // For testing; set to minFov on deploy.
 const near = 0.2;
-const far = 100;
+const far = radius * 3;
 let camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, near, far);
 
 window.addEventListener('resize', resizeCanvas);
 function resizeCanvas() {
     cssRenderer.setSize(window.innerWidth, window.innerHeight);
-    if(sphereVisible) {
-        glRenderer.setSize(window.innerWidth, window.innerHeight);
-    }
+    glRenderer.setSize(window.innerWidth, window.innerHeight);
     imgViewbox = {
         width: imageSize[0],
         height: imageSize[1]
@@ -513,9 +538,7 @@ function render() {
     }
     camera.lookAt(getCameraTarget());
     cssRenderer.render(cssScene, camera);
-    if(sphereVisible) {
-        glRenderer.render(glScene, camera);
-    }
+    glRenderer.render(glScene, camera);
     requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
@@ -628,7 +651,6 @@ document.addEventListener('touchstart', (e) => {
 
 document.addEventListener('touchmove', (e) => {
     mouseX = ((touchOrigin[0] - e.touches[0].clientX) / (window.innerWidth * 2)) + 0.5;
-    console.log((touchOrigin[1] - e.touches[0].clientY) / (window.innerHeight * 2));
     if (Math.abs((touchOrigin[1] - e.touches[0].clientY) / (window.innerHeight * 2)) > 0.05) {
         fov += touchOrigin[1] - e.touches[0].clientY > 0 ? 1 : -1;
         if (fov > maxFov) {
