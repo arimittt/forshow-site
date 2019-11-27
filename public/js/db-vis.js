@@ -5,7 +5,7 @@ let radius = 1500;
 let horizontalDensity = 12;
 let verticalDensity = 10;
 let imageSize = [384, 384];
-let connectionThreshold = radius*1.25;
+let connectionThreshold = radius * 2;
 const maxRotSpeed = 0.1;
 const sidebarAnimSpeed = 0.3;
 const sphereVisible = false;
@@ -35,6 +35,7 @@ function getUrlParameter(sParam) {
 };
 
 $(() => {
+    togglePause('about');
     fetch('/search')
         .then((res) => {
             return res.json();
@@ -337,6 +338,8 @@ function togglePause(source, id) {
         });
     } else if(source == 'settings') {
         $('.settings-container').css('display', 'block');
+    } else if(source == 'about') {
+        $('.about-container').css('display', 'block');
     } else {
         if($('.sidebar').hasClass('sidebar-in')) {
             restartAnim($('.sidebar'), 'sidebar-in', sidebarAnimSpeed);
@@ -350,6 +353,9 @@ function togglePause(source, id) {
             connectionThreshold = radius * parseFloat($('.connection-threshold-input').val()) * 2;
             insertSpectacles(spectacles);
             $('.settings-container').css('display', 'none');
+        }
+        if ($('.about-container').css('display') == 'block') {
+            $('.about-container').css('display', 'none');
         }
     }
 }
@@ -673,5 +679,15 @@ document.addEventListener('touchend', () => {
 $('.settings-button').on('click', () => {
     if(!isPaused) {
         togglePause('settings');
+    }
+});
+
+$('.about-proceed-button').on('click', () => {
+    togglePause();
+});
+
+$('.about-button').on('click', () => {
+    if(!isPaused) {
+        togglePause('about');
     }
 });

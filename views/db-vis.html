@@ -9,6 +9,17 @@
     <link rel="stylesheet" type="text/css" href="css/db-vis.css">
   </head>
   <body>
+    <div class="about-container">
+      <div class="about-text">
+        The <i><span class="highlight">Society of the Spectacle</span></i> is a society, coined by the Situationists, in which we are constantly surrounded by images, advertising, and political ideologies.<br>
+        <h2>A spectacle is an event or scene regarded in terms of its visual, but also societal impact.</h2><br>
+        Due to the immensity of different aspects of society, such as social movements or environmental crises, the 21st century has become bombarded with various spectacles. In addition to this, the omnipresence of digitalisation has made it virtually impossible for us to escape these spectacles.<br><br>
+        Throughout the last weeks, we have gathered spectacles in our design process to understand what the Society of the Spectacle entails. Together, they form a collective database, which is accessible by everyone. It allows for spectacles to be stolen, borrowed or combined, while also creating new inspiration and insight into today's happenings.
+      </div>
+      <div class="about-proceed-container">
+        <div class="about-proceed-button">Enter the database</div>
+      </div>
+    </div>
     <div class="sidebar">
       <div class="sidebar-top">
         <div class="sidebar-title">Filters</div>
@@ -48,9 +59,6 @@
           <div class="focus-keywords-item">Keyword-1</div>
           <div class="focus-keywords-item">Keyword-2</div>
           <div class="focus-keywords-item">Keyword-3</div>
-          <div class="focus-keywords-item">Keyword-1</div>
-          <div class="focus-keywords-item">Keyword-2</div>
-          <div class="focus-keywords-item">Keyword-3</div>
         </div>
       </div>
     </div>
@@ -62,8 +70,8 @@
       Max Spectacle Count: 
       <input class="spectacle-count-input" type="number" value="60" min="0"><br>
       <div class="settings-note">Reduce spectacle count for better performance.</div><br>
-      Image Size: <input type="number" class="image-size-input" value="384" min="0"><br>
-      Connection Threshold: <input type="number" class="connection-threshold-input" value="0.5" min="0" max="1">
+      Image Size: <input type="number" class="image-size-input" value="384" min="0"><br><br>
+      Connection Threshold [0-1]: <input type="number" class="connection-threshold-input" value="1" min="0" max="1">
     </div>
     <div class="ui-container">
       <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 28">
@@ -75,8 +83,9 @@
         <rect x="8" y="12" width="8" height="4" />
       </svg>
       <div class="bottom-ui-container">
-        <button class="settings-button">Settings</button>
+        <button class="bottom-button settings-button">Settings</button>
         <a class="upload-button" href="/upload" target="_blank">Upload</a>
+        <button class="bottom-button about-button">About</button>
         <span>Zoom In/Out — <span class="key-symbol">Scroll</span>&#160&#160&#160|&#160&#160&#160Toggle UI — <span class="key-symbol">H</span></span>
       </div>
     </div>
