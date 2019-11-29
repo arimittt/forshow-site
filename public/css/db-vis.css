@@ -645,6 +645,14 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
+    .about-container {
+        width: 90vw;
+    }
+
+    .about-text {
+        padding: 2rem;
+    }
+
     .filter-icon {
         top: 2rem;
         left: 1rem;
