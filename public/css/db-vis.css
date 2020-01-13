@@ -30,11 +30,11 @@ body {
     justify-content: stretch;
     align-items: stretch;
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
     transform: translateX(-100%);
     width: 20vw;
-    height: 100vh;
+    height: 100%;
     background: var(--bg-col);
     border-right: var(--prim-border);
     border-right-color: var(--prim-col);
@@ -696,12 +696,6 @@ body {
 
     .bottom-ui-container > span:last-child {
         display: none;
-    }
-
-    @supports (--webkit-appearance: none) {
-        .sidebar {
-            height: calc(100vh - 56px);
-        }
     }
 }
 

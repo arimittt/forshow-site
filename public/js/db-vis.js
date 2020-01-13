@@ -456,7 +456,7 @@ document.getElementById('container').appendChild(cssRenderer.domElement);
 const cssScene = new THREE.Scene();
 
 const canvas = document.getElementById('gl');
-const glRenderer = new THREE.WebGLRenderer({ canvas });
+const glRenderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 const glScene = new THREE.Scene();
 
 if(sphereVisible) {
